@@ -19,7 +19,7 @@ if [[ "$2" != "--new" ]]; then
 
     # 0 - Preparation
     print_info "[ ] Preparing the machine for the Arch Linux installation ..."
-    ./.modules/new/0-preparation.sh "${mirrorcountries[@]}"
+    ./.modules/new/0-preparation.sh
     print_success "[*] Machine prepared for the Arch Linux installation."
 
     # 1 - Disk formatting

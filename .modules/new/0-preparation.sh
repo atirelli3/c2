@@ -6,9 +6,11 @@ timedatectl set-ntp true &> /dev/null  # Enable NTP for time synchronization
 
 # Mirrorlist
 cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.backup  # Backup current mirrorlist
-reflector_countries=$( [ $# -gt 0 ] && IFS=, ; echo "$*" )   # Get countries from config file
+# Check if 'mirrorcountries' is declared and sanitize into a string for 'reflector'
+# Otherwise empty string (no countries provided)
+reflector_countries=$(declare -p mirrorcountries &>/dev/null && IFS=, echo "${mirrorcountries[*]}" || echo "")
 # Execute reflector to generate a new mirrorlist
-# (if countries are provided use them, otherwise use default)
+# (if countries are provided it use them w/ '--country', otherwise use default)
 reflector ${reflector_countries:+--country "$reflector_countries"} \
           --protocol https \
           --age 6 \

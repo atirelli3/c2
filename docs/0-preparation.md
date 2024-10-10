@@ -1,15 +1,21 @@
-# 0 - Basic Setup for Arch Linux installation
+## Basic Setup Script for Arch Linux
 
-This step is designed to configure some essential aspects of an Arch Linux installation, such as keyboard layout, updating the repository mirror list, configuring `pacman`, and installing the necessary GPG keys for secure package management.
+This script is designed to configure some essential aspects of an Arch Linux installation, such as keyboard layout, updating the repository mirror list, configuring `pacman`, and installing the necessary GPG keys for secure package management.
 
-## 1. Initial Keyboard Layout and Time Synchronization Setup
+### 1. Initial Keyboard Layout and Time Synchronization Setup
 
 ```bash
-loadkeys it  # Set the keyboard layout to Italian
+loadkeys us  # Set the keyboard layout to Italian
 timedatectl set-ntp true &> /dev/null  # Enable NTP to synchronize the system clock
 ```
 
-- **`loadkeys it`**: sets the keyboard layout to Italian (`it`).
+> [!NOTE]  
+> If you are unsure about the correct keyboard layout for your system, you can list all available layouts with the following command:  
+> ```bash
+> localectl list-keymaps
+> ```
+
+- **`loadkeys us`**: sets the keyboard layout to US (`us`).
 - **`timedatectl set-ntp true`**: enables NTP (Network Time Protocol) to automatically synchronize the system clock.
 
 ### 2. Backup and Update the Mirror List
@@ -23,6 +29,9 @@ reflector --country Italy,Germany,France \
           --save /etc/pacman.d/mirrorlist &> /dev/null
 pacman -Syy &> /dev/null  # Update the package database
 ```
+
+> [!TIP]  
+> You can refer to the [Arch Wiki Reflector Guide](https://wiki.archlinux.org/title/Reflector) for detailed usage instructions on how to generate an optimal mirror list for your location.
 
 - **`cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.backup`**: creates a backup of the current mirror list.
 - **`reflector`**: updates the `pacman` mirror list. Options used:
@@ -58,7 +67,7 @@ pacman-key --init &> /dev/null  # Initialize the keyring
 pacman -Syy &> /dev/null  # Refresh the package database
 ```
 
-- **`pacman -S --noconfirm archlinux-keyring`**: installs the `archlinux-keyring` package without requiring confirmation.
+- **`pacman -S archlinux-keyring`**: installs the `archlinux-keyring` package.
 - **`pacman-key --init`**: initializes the GPG keyrings used by `pacman` to verify the integrity and authenticity of packages.
 - **`pacman -Syy`**: refreshes the package database once more.
 
