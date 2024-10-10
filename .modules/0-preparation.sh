@@ -1,0 +1,31 @@
+# !/bin/bash
+
+# Base setup
+loadkeys $keyboard                     # Set keyboard layout
+timedatectl set-ntp true &> /dev/null  # Enable NTP for time synchronization
+
+# Mirrorlist
+cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.backup  # Backup current mirrorlist
+reflector --country "${reflector_countries}" \
+        --protocol https \
+        --age 6 \
+        --sort rate \
+        --save /etc/pacman.d/mirrorlist &> /dev/null
+pacman -Syy &> /dev/null  # Refresh package manager database(s)
+
+# Configure pacman:
+#
+# - color output
+# - fancy progress bar
+# - verbose package list
+# - parallel download(s)
+sed -i "/etc/pacman.conf" \
+    -e "s|^#Color|&\nColor\nILoveCandy|" \
+    -e "s|^#VerbosePkgLists|&\nVerbosePkgLists|" \
+    -e "s|^#ParallelDownloads.*|&\nParallelDownloads = 20|"
+pacman -Syy &> /dev/null  # Refresh package manager database(s)
+
+# Keyring(s)
+pacman -S --noconfirm archlinux-keyring &> /dev/null  # Download updated keyrings
+pacman-key --init &> /dev/null                        # Initialize newer keyrings
+pacman -Syy &> /dev/null                              # Refresh package manager database(s)
