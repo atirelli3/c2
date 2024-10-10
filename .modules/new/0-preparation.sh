@@ -6,11 +6,14 @@ timedatectl set-ntp true &> /dev/null  # Enable NTP for time synchronization
 
 # Mirrorlist
 cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.backup  # Backup current mirrorlist
-reflector --country "${reflector_countries}" \
-        --protocol https \
-        --age 6 \
-        --sort rate \
-        --save /etc/pacman.d/mirrorlist &> /dev/null
+reflector_countries=$( [ $# -gt 0 ] && IFS=, ; echo "$*" )   # Get countries from config file
+# Execute reflector to generate a new mirrorlist
+# (if countries are provided use them, otherwise use default)
+reflector ${reflector_countries:+--country "$reflector_countries"} \
+          --protocol https \
+          --age 6 \
+          --sort rate \
+          --save /etc/pacman.d/mirrorlist &> /dev/null
 pacman -Syy &> /dev/null  # Refresh package manager database(s)
 
 # Configure pacman:
