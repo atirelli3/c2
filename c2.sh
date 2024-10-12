@@ -28,7 +28,7 @@ if [[ "$2" = "--new" ]]; then
 
     # 0 - Preparation
     print_info "[ ] Preparing the machine for the Arch Linux installation ..."
-    ./.modules/new/0-preparation.sh
+    ./.modules/new/0-preparation.sh $keyboard $mirrorcountries
     print_success "[*] Machine prepared for the Arch Linux installation."
 fi
 

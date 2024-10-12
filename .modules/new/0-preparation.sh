@@ -11,6 +11,10 @@
 
 # !/bin/bash
 
+# Get script argument(s)
+keyboard=$1         # Keyboard layout
+mirrorcountries=$2  # Mirror countries (list)
+
 # Base setup
 loadkeys $keyboard                     # Set keyboard layout
 timedatectl set-ntp true &> /dev/null  # Enable NTP for time synchronization
