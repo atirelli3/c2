@@ -9,29 +9,37 @@
 #                 |   Version   | 1.0.0 (beta)                        |
 # ---------------------------------------------------------------------
 
-# !/bin/bash
+#!/bin/bash
 
 # Get script argument(s)
-keyboard=$1         # Keyboard layout
-mirrorcountries=$2  # Mirror countries (list)
+debug=$1            # Log level (yes or no)
+keyboard=$2         # Keyboard layout
+mirrorcountries=$3  # Mirror countries (list)
+
+# Definisci la redirezione in base al livello di debug
+redir_output=""
+[[ "$debug" != "yes" ]] && redir_output="&> /dev/null"
 
 # Base setup
 loadkeys $keyboard                     # Set keyboard layout
-timedatectl set-ntp true &> /dev/null  # Enable NTP for time synchronization
+eval "timedatectl set-ntp true $redir_output"  # Enable NTP for time synchronization
 
 # Mirrorlist
 cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.backup  # Backup current mirrorlist
+
 # Check if 'mirrorcountries' is declared and sanitize into a string for 'reflector'
 # Otherwise empty string (no countries provided)
 reflector_countries=$(declare -p mirrorcountries &>/dev/null && IFS=, echo "${mirrorcountries[*]}" || echo "")
+
 # Execute reflector to generate a new mirrorlist
-# (if countries are provided it use them w/ '--country', otherwise use default)
-reflector ${reflector_countries:+--country "$reflector_countries"} \
+# (if countries are provided use them w/ '--country', otherwise use default)
+eval "reflector ${reflector_countries:+--country "$reflector_countries"} \
           --protocol https \
           --age 6 \
           --sort rate \
-          --save /etc/pacman.d/mirrorlist &> /dev/null
-pacman -Syy &> /dev/null  # Refresh package manager database(s)
+          --save /etc/pacman.d/mirrorlist $redir_output"
+
+eval "pacman -Syy $redir_output"  # Refresh package manager database(s)
 
 # Configure pacman:
 #
@@ -43,9 +51,10 @@ sed -i "/etc/pacman.conf" \
     -e "s|^#Color|&\nColor\nILoveCandy|" \
     -e "s|^#VerbosePkgLists|&\nVerbosePkgLists|" \
     -e "s|^#ParallelDownloads.*|&\nParallelDownloads = 20|"
-pacman -Syy &> /dev/null  # Refresh package manager database(s)
+
+eval "pacman -Syy $redir_output"  # Refresh package manager database(s)
 
 # Keyring(s)
-pacman -S --noconfirm archlinux-keyring &> /dev/null  # Download updated keyrings
-pacman-key --init &> /dev/null                        # Initialize newer keyrings
-pacman -Syy &> /dev/null                              # Refresh package manager database(s)
+eval "pacman -S --noconfirm archlinux-keyring $redir_output"  # Download updated keyrings
+eval "pacman-key --init $redir_output"                        # Initialize newer keyrings
+eval "pacman -Syy $redir_output"                              # Refresh package manager database(s)

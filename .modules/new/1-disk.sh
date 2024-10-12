@@ -11,6 +11,10 @@
 
 # !/bin/bash
 
+# Get script argument(s)
+target=$1         # Target disk
+target_secure=$2  # Fill disk w/ rnd data(s) ?
+
 ./.modules/new/1-disk/wipe.sh       # Wipe the disk
 # (optional) Fill the disk with random data(s)
 if [ "$target_secure" = "yes" ] && { ./.modules/new/1-disk/secure.sh; }
