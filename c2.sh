@@ -20,11 +20,11 @@ print_info() { print_debug "36" "$1"; }         # Cyan
 print_warning() { print_debug "33" "$1";}       # Yellow
 
 # Chek if the "c2" option is '--new'
-if [[ "$2" != "--new" ]]; then
+if [[ "$2" = "--new" ]]; then
     # Check prerequisites => root privileges 
     [ "$EUID" -ne 0 ] && { print_warning "Please run as root. Aborting script."; exit 1; }
      # Check prerequisites => system is in UEFI mode
-    [ "$checkefi" = "yes" && -d /sys/firmware/efi/efivars ] || { print_warning "UEFI mode not detected. Aborting script."; exit 1; }
+    [[ "$checkefi" = "yes" && ! -d /sys/firmware/efi/efivars ]] && { print_warning "UEFI mode not detected. Aborting script."; exit 1; }
 
     # 0 - Preparation
     print_info "[ ] Preparing the machine for the Arch Linux installation ..."
