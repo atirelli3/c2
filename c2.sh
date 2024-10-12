@@ -20,8 +20,8 @@ print_info() { print_debug "36" "$1"; }         # Cyan
 print_warning() { print_debug "33" "$1"; }      # Yellow
 
 # Set silent to "yes" if $3 == --silent, otherwise set to "no"
-silent="mo"
-[[ "$3" == "--silent" ]] && silent="yes"
+debug="yes"
+[[ "$3" == "--silent" ]] && debug="no"
 
 # Check if the "c2" option is '--new'
 if [[ "$2" = "--new" ]]; then
@@ -32,7 +32,7 @@ if [[ "$2" = "--new" ]]; then
 
     # 0 - Preparation
     print_info "[ ] Preparing the machine for the Arch Linux installation ..."
-    ./.modules/new/0-preparation.sh "$silent" "$keyboard" "$mirrorcountries"
+    ./.modules/new/0-preparation.sh "$debug" "$keyboard" "$mirrorcountries"
     print_success "[*] Machine prepared for the Arch Linux installation."
 fi
 
