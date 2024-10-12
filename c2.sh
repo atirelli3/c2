@@ -20,7 +20,7 @@ print_info() { print_debug "36" "$1"; }         # Cyan
 print_warning() { print_debug "33" "$1"; }      # Yellow
 
 # Set silent to "yes" if $3 == --silent, otherwise set to "no"
-silent="no"
+silent="mo"
 [[ "$3" == "--silent" ]] && silent="yes"
 
 # Check if the "c2" option is '--new'
