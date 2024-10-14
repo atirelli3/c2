@@ -1,4 +1,4 @@
-# System Configuration Guide
+# System Locale Configuration Guide
 
 This guide covers the essential commands needed to configure your system hostname, locale, timezone, and console keymap settings during an Arch Linux installation.
 
