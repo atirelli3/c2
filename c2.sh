@@ -37,16 +37,7 @@ if [[ "$2" = "--new" ]]; then
 
     # 1 - Disk formatting
     print_info "[ ] Formatting ${target} for the Arch Linux installation ..."
-    if [ "$filesystem" = "btrfs" ]; then
-        ./.modules/new/1-disk.sh "$debug" "$target" "$secure" "$rootlabel" \
-        "$size" "$mountpoint" "$label" \
-        "$encrypt" "$encrypt_key" "$encrypt_type" "$encrypt_label" \
-        "$btrfs_subvols" "$btrfs_subvols_mount" "$btrfs_opts"
-    else
-        ./.modules/new/1-disk.sh "$debug" "$target" "$secure" "$rootlabel" \
-        "$size" "$mountpoint" "$label" \
-        "$encrypt" "$encrypt_key" "$encrypt_type" "$encrypt_label"
-    fi
+    ./.modules/new/1-disk.sh "$debug" "$1"
     print_success "[*] ${target} formatted for the Arch Linux installation."
 
     # 2 - Install Arch Linux

@@ -12,14 +12,9 @@
 #!/bin/bash
 
 # Get script argument(s)
-debug=$1       # Log level (yes or no)
-kernel=$2      # Linux kernel
-cpu=$3         # CPU driver
-network=$4     # Network
-bootloader=$5  # Bootloader
-osprober=$6    # Enable Os Prober (Windows dualboot)
-filesystem=$7  # Filesystem
-encrypt=$8     # Disk encryption
+debug=$1  # Log level (yes or no)
+
+source "$2"  # Load configuration file
 
 # Output rediriction based on debug log level
 redir_output=""
