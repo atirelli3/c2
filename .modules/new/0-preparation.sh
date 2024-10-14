@@ -12,9 +12,9 @@
 #!/bin/bash
 
 # Get script argument(s)
-debug=$1            # Log level (yes or no)
-keyboard=$2         # Keyboard layout
-mirrorcountries=$3  # Mirror countries (list)
+debug=$1  # Log level (yes or no)
+
+source "$2"  # Load configuration file
 
 # Output rediriction based on debug log level
 redir_output=""

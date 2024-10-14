@@ -32,7 +32,7 @@ if [[ "$2" = "--new" ]]; then
 
     # 0 - Preparation
     print_info "[ ] Preparing the machine for the Arch Linux installation ..."
-    ./.modules/new/0-preparation.sh "$debug" "$keyboard" "$mirrorcountries"
+    ./.modules/new/0-preparation.sh "$debug" "$1"
     print_success "[*] Machine prepared for the Arch Linux installation."
 
     # 1 - Disk formatting
@@ -56,15 +56,3 @@ if [[ "$2" = "--new" ]]; then
     "$filesystem" "$encrypt"
     print_success "[*] Arch Linux w/ base package(s) installed."
 fi
-
-
-
-# 1 - Disk formatting
-    # print_info "[ ] Formatting ${target} for the Arch Linux installation ..."
-    # ./.modules/new/1-disk.sh
-    # print_success "[*] ${target} formatted for the Arch Linux installation."
-
-    # # 2 - Install Arch Linux
-    # print_info "[ ] Installing Arch Linux - Base package(s) ..."
-    # ./.modules/new/2-install.sh
-    # print_success "[*] Arch Linux w/ base package(s) installed."
