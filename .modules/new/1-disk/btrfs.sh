@@ -1,31 +1,44 @@
-# !/bin/bash
+#!/bin/bash
 
-mkfs.btrfs -L $part2_label $root_device &> /dev/null  # Format as Btrfs
-mount $root_device /mnt                               # Mount root
+# Get script argument(s)
+debug=$1                # Log level (yes or no)
+root_device=$2          # Root partition
+label=$3                # Root label
+btrfs_subvols=$4        # Subvolumes mount points
+btrfs_subvols_mount=$5  # Mount points (subvolumes)
+btrfs_opts=$6           # Mount options
+BTRFS_SV_OPTS=$(IFS=,; echo "${btrfs_opts[*]}")  # Btrfs mount options
+
+# Output rediriction based on debug log level
+redir_output=""
+[[ "$debug" != "yes" ]] && redir_output="&> /dev/null"
+
+eval "mkfs.btrfs -L $label $root_device $redir_output"  # Format as Btrfs
+eval "mount $root_device /mnt $redir_output"                  # Mount root
 
 # Create Btrfs subvolumes
-btrfs subvolume create /mnt/@ &> /dev/null           # System
-btrfs subvolume create /mnt/@home &> /dev/null       # Home
-btrfs subvolume create /mnt/@snapshots &> /dev/null  # Snapshots
-btrfs subvolume create /mnt/@cache &> /dev/null      # Cache
-btrfs subvolume create /mnt/@log &> /dev/null        # Log
-btrfs subvolume create /mnt/@tmp &> /dev/null        # Temp
+eval "btrfs subvolume create /mnt/@ $redir_output"           # System
+eval "btrfs subvolume create /mnt/@home $redir_output"       # Home
+eval "btrfs subvolume create /mnt/@snapshots $redir_output"  # Snapshots
+eval "btrfs subvolume create /mnt/@cache $redir_output"      # Cache
+eval "btrfs subvolume create /mnt/@log $redir_output"        # Log
+eval "btrfs subvolume create /mnt/@tmp $redir_output"        # Temp
 # Create additional subvolumes
 for subvol in "${btrfs_subvols[@]}"; do
-    btrfs subvolume create /mnt/@$subvol &> /dev/null
+    eval "btrfs subvolume create /mnt/@$subvol $redir_output"
 done
 umount /mnt  # Unmount to remount with subvolume options
 
 # Remount with Btrfs subvolumes
-mount -o ${BTRFS_SV_OPTS},subvol=@ $root_device /mnt &> /dev/null         # System
-mkdir -p /mnt/{home,.snapshots,var/cache,var/log,var/tmp} &> /dev/null    # Mountpoint(s)
-mount -o ${BTRFS_SV_OPTS},subvol=@home $root_device /mnt/home             # Home
-mount -o ${BTRFS_SV_OPTS},subvol=@snapshots $root_device /mnt/.snapshots  # Snapshots
-mount -o ${BTRFS_SV_OPTS},subvol=@cache $root_device /mnt/var/cache       # Cache
-mount -o ${BTRFS_SV_OPTS},subvol=@log $root_device /mnt/var/log           # Log
-mount -o ${BTRFS_SV_OPTS},subvol=@tmp $root_device /mnt/var/tmp           # Temp
+eval "mount -o ${BTRFS_SV_OPTS},subvol=@ $root_device /mnt $redir_output"       # System
+eval "mkdir -p /mnt/{home,.snapshots,var/cache,var/log,var/tmp} $redir_output"  # Mountpoint(s)
+eval "mount -o ${BTRFS_SV_OPTS},subvol=@home $root_device /mnt/home $redir_output"            # Home
+eval "mount -o ${BTRFS_SV_OPTS},subvol=@snapshots $root_device /mnt/.snapshots $redir_output" # Snapshots
+eval "mount -o ${BTRFS_SV_OPTS},subvol=@cache $root_device /mnt/var/cache $redir_output"      # Cache
+eval "mount -o ${BTRFS_SV_OPTS},subvol=@log $root_device /mnt/var/log $redir_output"          # Log
+eval "mount -o ${BTRFS_SV_OPTS},subvol=@tmp $root_device /mnt/var/tmp $redir_output"          # Temp
 # Mount additional subvolumes
 for i in "${!btrfs_subvols[@]}"; do
     mkdir -p /mnt${btrfs_subvols_mount[$i]}
-    mount -o ${BTRFS_SV_OPTS},subvol=@${btrfs_subvols[$i]} $root_device /mnt${btrfs_subvols_mount[$i]}
+    eval "mount -o ${BTRFS_SV_OPTS},subvol=@${btrfs_subvols[$i]} $root_device /mnt${btrfs_subvols_mount[$i]} $redir_output"
 done

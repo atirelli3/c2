@@ -34,6 +34,27 @@ if [[ "$2" = "--new" ]]; then
     print_info "[ ] Preparing the machine for the Arch Linux installation ..."
     ./.modules/new/0-preparation.sh "$debug" "$keyboard" "$mirrorcountries"
     print_success "[*] Machine prepared for the Arch Linux installation."
+
+    # 1 - Disk formatting
+    print_info "[ ] Formatting ${target} for the Arch Linux installation ..."
+    if [ "$filesystem" = "btrfs" ]; then
+        ./.modules/new/1-disk.sh "$debug" "$target" "$secure" "$rootlabel" \
+        "$size" "$mountpoint" "$label" \
+        "$encrypt" "$encrypt_key" "$encrypt_type" "$encrypt_label" \
+        "$btrfs_subvols" "$btrfs_subvols_mount" "$btrfs_opts"
+    else
+        ./.modules/new/1-disk.sh "$debug" "$target" "$secure" "$rootlabel" \
+        "$size" "$mountpoint" "$label" \
+        "$encrypt" "$encrypt_key" "$encrypt_type" "$encrypt_label"
+    fi
+    print_success "[*] ${target} formatted for the Arch Linux installation."
+
+    # 2 - Install Arch Linux
+    print_info "[ ] Installing Arch Linux - Base package(s) ..."
+    ./.modules/new/2-install.sh "$debug" "$kernel" "$cpu" "$network" \
+    "$bootloader" "$osprober" \
+    "$filesystem" "$encrypt"
+    print_success "[*] Arch Linux w/ base package(s) installed."
 fi
 
 

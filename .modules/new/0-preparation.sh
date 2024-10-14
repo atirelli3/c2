@@ -16,7 +16,7 @@ debug=$1            # Log level (yes or no)
 keyboard=$2         # Keyboard layout
 mirrorcountries=$3  # Mirror countries (list)
 
-# Definisci la redirezione in base al livello di debug
+# Output rediriction based on debug log level
 redir_output=""
 [[ "$debug" != "yes" ]] && redir_output="&> /dev/null"
 
