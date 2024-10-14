@@ -21,7 +21,7 @@ source "$2"  # Load configuration file
 
 ./.modules/new/1-disk/wipe.sh "$debug" "$target"  # Wipe the disk
 # (optional) Fill the disk w/ random data(s)
-if [ "$secure" = "yes" ] && { ./.modules/new/1-disk/secure.sh "$debug" "$target"; }
+[ "$secure" = "yes" ] && ./.modules/new/1-disk/secure.sh "$debug" "$target"
 # Partition the disk
 ./.modules/new/1-disk/partition.sh "$debug" "$target" "$size" \
 "$encrypt" "$encrypt_key" "$encrypt_type" "$encrypt_label" \

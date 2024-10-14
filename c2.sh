@@ -42,8 +42,6 @@ if [[ "$2" = "--new" ]]; then
 
     # 2 - Install Arch Linux
     print_info "[ ] Installing Arch Linux - Base package(s) ..."
-    ./.modules/new/2-install.sh "$debug" "$kernel" "$cpu" "$network" \
-    "$bootloader" "$osprober" \
-    "$filesystem" "$encrypt"
+    ./.modules/new/2-install.sh "$debug" "$1"
     print_success "[*] Arch Linux w/ base package(s) installed."
 fi
