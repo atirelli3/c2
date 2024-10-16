@@ -12,7 +12,7 @@
 #!/bin/bash
 
 source "$1"  # Load configuration file
-
+configfile=$1
 # ------------------------------------------------------------------------------
 #                              UTILITY FUNCTION(s)
 # ------------------------------------------------------------------------------
@@ -43,55 +43,58 @@ new() {
 
   # 0 - PREPARATION
   print_info "[ ] Preparing the machine for the Arch Linux installation ..."
-  ./.modules/new/0-preparation.sh "$1" "$redir_output" 
+  ./.modules/new/0-preparation.sh "$configfile" "$redir_output" 
   print_success "[*] Machine prepared for the Arch Linux installation."
 
   # 1 - DISK FORMATTING
   print_info "[ ] Formatting ${target} for the Arch Linux installation ..."
-  ./.modules/new/1-disk.sh "$1" "$redir_output" 
+  ./.modules/new/1-disk.sh "$configfile" "$redir_output" 
   print_success "[*] ${target} formatted for the Arch Linux installation."
 
   # 2 - SYSTEM INSTALLATION
   print_info "[ ] Installing Arch Linux - Base package(s) ..."
-  ./.modules/new/2-install.sh "$1" "$redir_output"
+  ./.modules/new/2-install.sh "$configfile" "$redir_output"
   print_success "[*] Arch Linux w/ base package(s) installed."
 
   # 3 - SYSTEM CONFIGURATION
   print_info "[ ] Configuring Arch Linux ..."
-  cp ./.modules/new/3-conf.sh /mnt/tmp/  # Copy the script in /mnt/tmp
-  arch-chroot /mnt /bin/bash -c "/tmp/3-conf.sh \"$1\" \"$redir_output\""
-  rm -r /mnt/tmp/3-conf.sh  # Remove the script from /tmp
+  cp ./.modules/new/3-conf.sh /mnt  # Copy the script in /mnt
+  arch-chroot /mnt /bin/bash -c "3-conf.sh \"$configfile\" \"$redir_output\""
+  rm /mnt/3-conf.sh  # Remove the script from /mnt
   print_success "[*] Arch Linux configured."
 
   # 4 - SYSTEM RAMDISK
   print_info "[ ] Configuring ramdisk/kernel (mkinitcpio) ..."
-  cp ./.modules/new/4-ramdisk.sh /mnt/tmp/  # Copy the script in /mnt/tmp
-  arch-chroot /mnt /bin/bash -c "/tmp/4-ramdisk.sh \"$1\" \"$redir_output\""
-  rm -r /mnt/tmp/4-ramdisk.sh  # Remove the script from /tmp
+  cp ./.modules/new/4-ramdisk.sh /mnt  # Copy the script in /mnt
+  arch-chroot /mnt /bin/bash -c "4-ramdisk.sh \"$configfile\" \"$redir_output\""
+  rm /mnt/tmp/4-ramdisk.sh  # Remove the script from /mnt
   print_success "[*] Ramdisk/kernel (mkinitcpio) configured."
 
   # 5 - BOOTLOADER
   print_info "[ ] Configuring bootloader - ${bootloader} ..."
-  cp ./.modules/new/5-$bootloader.sh /mnt/tmp/  # Copy the script in /mnt/tmp
-  arch-chroot /mnt /bin/bash -c "/tmp/5-$bootloader.sh \"$1\" \"$redir_output\""
-  rm -r /mnt/tmp/5-$bootloader.sh  # Remove the script from /tmp
+  cp ./.modules/new/5-$bootloader.sh /mnt  # Copy the script in /mnt
+  arch-chroot /mnt /bin/bash -c "5-$bootloader.sh \"$configfile\" \"$redir_output\""
+  rm /mnt/5-$bootloader.sh  # Remove the script from /mnt
   print_success "[*] Bootloader - ${bootloader} configured."
 
   # 6 - AUDIO DRIVER
   print_info "[ ] Installing audio driver(s) - ${audio} ..."
-  cp ./.modules/new/6-$audio.sh /mnt/tmp/  # Copy the script in /mnt/tmp
-  arch-chroot /mnt /bin/bash -c "/tmp/6-$audio.sh \"$1\" \"$redir_output\""
-  rm -r /mnt/tmp/6-$audio.sh  # Remove the script from /tmp
+  cp ./.modules/new/6-$audio.sh /mnt  # Copy the script in /mnt
+  arch-chroot /mnt /bin/bash -c "6-$audio.sh \"$configfile\" \"$redir_output\""
+  rm /mnt/6-$audio.sh  # Remove the script from /mnt
   print_success "[+] Audio driver(s) - ${audio} installed."
 
   # 7 - GRAPHIC DRIVER
   print_info "[ ] Installing graphic driver(s) - ${gpu} ..."
-  cp ./.modules/new/7-$gpu.sh /mnt/tmp/  # Copy the script in /mnt/tmp
-  arch-chroot /mnt /bin/bash -c "/tmp/7-$gpu.sh \"$1\" \"$redir_output\""  # Corrected 6-$gpu.sh to 7-$gpu.sh
-  rm -r /mnt/tmp/7-$gpu.sh  # Remove the script from /tmp
+  cp ./.modules/new/7-$gpu.sh /mnt  # Copy the script in /mnt
+  arch-chroot /mnt /bin/bash -c "7-$gpu.sh \"$configfile\" \"$redir_output\""
+  rm /mnt/7-$gpu.sh  # Remove the script from /mnt
   print_success "[+] Graphic driver(s) - ${gpu} installed."
 }
 
 if [[ "$2" = "--new" ]]; then
   new
+
+  print_success "[+] Arch Linux installed!"
+  reboot
 fi
