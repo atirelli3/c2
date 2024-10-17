@@ -57,7 +57,7 @@ setup_grub() {
 
   # Configure GRUB for encrypted disk
   if [ "$encrypt" = "yes" ]; then
-    uuid=$(blkid -s UUID -o value ${target_part}2)  # Get UUID of the encrypted partition
+    uuid=$(blkid -s UUID -o value ${encrypt_label}2)  # Get UUID of the encrypted partition
     # Update GRUB_CMDLINE_LINUX_DEFAULT for encryption
     sed -i "s|^GRUB_CMDLINE_LINUX_DEFAULT=.*|GRUB_CMDLINE_LINUX_DEFAULT=\"loglevel=3 cryptdevice=UUID=${uuid}:${encrypt_label}\"|" /etc/default/grub
     # Preload necessary modules for encrypted disk
