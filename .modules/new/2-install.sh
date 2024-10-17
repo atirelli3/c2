@@ -55,7 +55,7 @@ fi
 # system packages, bootloader, network utilities, and other extras based on the 
 # system configuration. It builds the command dynamically.
 install_base_system() {
-  eval "pacstrap /mnt $LNX $BASE $cpu-ucode $BOOTLOADER $network $EXTRA $2"  # Install base pkg(s)
+  eval "pacstrap /mnt $LNX $BASE $cpu-ucode $network $EXTRA $2"  # Install base pkg(s)
 }
 
 # Generate the filesystem table (fstab):

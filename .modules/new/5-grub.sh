@@ -35,12 +35,25 @@ fi
 #                               MODULE FUNCTION(s)
 # ------------------------------------------------------------------------------
 
+install_grub2() {
+  pacman -S --noconfirm efibootmgr
+  su - $username
+  git clone https://aur.archlinux.org/grub-improved-luks2-git.git 
+  cd grub-improved-luks2-git
+  makepkg -si
+  cd ..
+  rm -rf grub-improved-luks2-git
+  exit
+}
+
 # Setup GRUB bootloader:
 # This function configures and installs the GRUB bootloader based on system
 # configurations such as encryption, secure boot, and OS prober. It backs up the
 # current GRUB configuration, modifies settings, and installs GRUB on the EFI
 # partition.
 setup_grub() {
+  install_grub2
+
   # Backup current GRUB configuration
   cp /etc/default/grub /etc/default/grub.backup
 
