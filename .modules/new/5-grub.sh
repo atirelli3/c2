@@ -61,7 +61,7 @@ setup_grub() {
     # Update GRUB_CMDLINE_LINUX_DEFAULT for encryption
     sed -i "s|^GRUB_CMDLINE_LINUX_DEFAULT=.*|GRUB_CMDLINE_LINUX_DEFAULT=\"loglevel=3 cryptdevice=UUID=${uuid}:${encrypt_label}\"|" /etc/default/grub
     # Preload necessary modules for encrypted disk
-    sed -i "s/^GRUB_PRELOAD_MODULES=.*/GRUB_PRELOAD_MODULES=\"part_gpt part_msdos luks\"/" /etc/default/grub
+    sed -i "s/^GRUB_PRELOAD_MODULES=.*/GRUB_PRELOAD_MODULES=\"part_gpt part_msdos luks2\"/" /etc/default/grub
     # Enable GRUB cryptodisk
     sed -i "s/^#GRUB_ENABLE_CRYPTODISK=.*/GRUB_ENABLE_CRYPTODISK=y/" /etc/default/grub
   fi
