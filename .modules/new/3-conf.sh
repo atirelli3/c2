@@ -109,6 +109,7 @@ conf_pacman() {
 # tool based on the fastest available servers, and enables the reflector service
 # and timer for periodic updates.
 conf_mirrorlist() {
+  eval "pacman -S --noconfirm reflector $2"
   cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.backup  # Backup current mirrorlist
   # Sanitize 'mirrorcountries' into a string if declared
   reflector_countries=$(declare -p mirrorcountries &>/dev/null && (IFS=, ; echo "${mirrorcountries[*]}" | sed 's/ /,/g') || echo "")

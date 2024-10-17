@@ -100,5 +100,6 @@ new() {
 if [[ "$2" = "--new" ]]; then
   new
   print_success "[+] Arch Linux installed!"
+  umount -R /mnt
   reboot
 fi
