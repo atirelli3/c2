@@ -67,7 +67,7 @@ setup_grub() {
   fi
 
   # Install GRUB to EFI partition
-  if [ "$secureboot" = "yes" ] && [ "$checkefi" = "yes" ]; then
+  if [ "$secureboot" = "yes" ]; then
     # Install GRUB with Secure Boot support
     eval "grub-install --target=x86_64-efi --efi-directory=/${mountpoint} --bootloader-id=GRUB --modules=\"tpm\" --disable-shim-lock $2"
     eval "grub-mkconfig -o /boot/grub/grub.cfg $2"  # Generate GRUB configuration
