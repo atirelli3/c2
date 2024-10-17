@@ -57,15 +57,16 @@ setup_grub() {
 
   # Configure GRUB for encrypted disk
   if [ "$encrypt" = "yes" ]; then
-    uuid=$(blkid -s UUID -o value ${target_part}2)  # Get UUID of the encrypted partition
+    dev_uuid=$(blkid -s UUID -o value ${target_part}2)  # Get UUID of the encrypted partition
+    root_uuid=$(blkid -s UUID -o value /dev/mapper/${encrypt_label})  # Get UUID of the dencrypted partition
     # Update GRUB_CMDLINE_LINUX_DEFAULT for encryption
-    sed -i "s|^GRUB_CMDLINE_LINUX_DEFAULT=.*|GRUB_CMDLINE_LINUX_DEFAULT=\"loglevel=3 cryptdevice=UUID=${uuid}:${encrypt_label}\"|" /etc/default/grub
+    sed -i "s|^GRUB_CMDLINE_LINUX_DEFAULT=.*|GRUB_CMDLINE_LINUX_DEFAULT=\"loglevel=3 cryptdevice=UUID=${dev_uuid}:${encrypt_label} root=UUID=${root_uuid}\"|" /etc/default/grub
     # Preload necessary modules for encrypted disk
     sed -i "s/^GRUB_PRELOAD_MODULES=.*/GRUB_PRELOAD_MODULES=\"part_gpt part_msdos luks2\"/" /etc/default/grub
     # Enable GRUB cryptodisk
     sed -i "s/^#GRUB_ENABLE_CRYPTODISK=.*/GRUB_ENABLE_CRYPTODISK=y/" /etc/default/grub
     # Map the encrypt device w/ the logical one
-    echo "${encrypt_label} UUID=${uuid} none luks" | tee -a /etc/crypttab
+    # echo "${encrypt_label} UUID=${uuid} none luks" | tee -a /etc/crypttab
   fi
 
   # Install GRUB to EFI partition
