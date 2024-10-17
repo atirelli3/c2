@@ -70,7 +70,7 @@ setup_grub() {
   if [ "$secureboot" = "yes" ]; then
     # Install GRUB with Secure Boot support
     eval "grub-install --target=x86_64-efi --efi-directory=/${mountpoint} --bootloader-id=GRUB --modules=\"tpm\" --disable-shim-lock $2"
-    eval "grub-mkconfig -o /boot/grub/grub.cfg $2"  # Generate GRUB configuration
+    eval "grub-mkconfig -o /${mountpoint}/grub/grub.cfg $2"  # Generate GRUB configuration
     # Secure Boot: Install sbctl and generate keys
     eval "pacman -S --noconfirm sbctl $2"  # Install sbctl for Secure Boot management
     eval "sbctl create-keys $2"            # Create Secure Boot keys
@@ -83,7 +83,7 @@ setup_grub() {
   else
     # Standard GRUB installation without Secure Boot
     eval "grub-install --target=x86_64-efi --efi-directory=/${mountpoint} --bootloader-id=GRUB $2"
-    eval "grub-mkconfig -o /boot/grub/grub.cfg $2"  # Generate GRUB configuration
+    eval "grub-mkconfig -o /${mountpoint}/grub/grub.cfg $2"  # Generate GRUB configuration
   fi
 }
 

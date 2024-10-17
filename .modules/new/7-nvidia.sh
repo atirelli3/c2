@@ -41,5 +41,5 @@ setup_nvidia() {
 #                                  MODULE BODY
 # ------------------------------------------------------------------------------
 setup_nvidia  ## 1. Install and configure NVIDIA driver(s)
-eval "mkinitcpio -P $2"                         ## 2. Generate the initial ramdisk
-eval "grub-mkconfig -o /boot/grub/grub.cfg $2"  ## 3. Generate GRUB configuration
+eval "mkinitcpio -P $2"                                  ## 2. Generate the initial ramdisk
+eval "grub-mkconfig -o /${mountpoint}/grub/grub.cfg $2"  ## 3. Generate GRUB configuration

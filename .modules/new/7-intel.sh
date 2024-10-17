@@ -36,5 +36,5 @@ setup_intel() {
 #                                  MODULE BODY
 # ------------------------------------------------------------------------------
 setup_intel  ## 1. Install and configure Intel driver(s)
-eval "mkinitcpio -P $2"                         ## 2. Generate the initial ramdisk
-eval "grub-mkconfig -o /boot/grub/grub.cfg $2"  ## 3. Generate GRUB configuration
+eval "mkinitcpio -P $2"                                  ## 2. Generate the initial ramdisk
+eval "grub-mkconfig -o /${mountpoint}/grub/grub.cfg $2"  ## 3. Generate GRUB configuration
