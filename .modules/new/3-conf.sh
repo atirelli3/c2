@@ -30,6 +30,26 @@ function_call="conf_$network"
 #                               MODULE FUNCTION(s)
 # ------------------------------------------------------------------------------
 
+conf_yay() {
+  sudo -u "$username" bash -c "
+    cd /tmp &&
+    git clone https://aur.archlinux.org/yay.git && cd yay &&
+    makepkg -si &&
+    cd .. && rm -rf yay
+    yay -Syy
+  "
+}
+
+conf_paru() {
+  sudo -u "$username" bash -c "
+    cd /tmp &&
+    git clone https://aur.archlinux.org/paru.git && cd paru &&
+    makepkg -si &&
+    cd .. && rm -rf paru
+    paru -Syy
+  "
+}
+
 # Configure system Locale:
 # This function sets the hostname, configures /etc/hosts for local resolution,
 # enables the desired locale(s), sets the system time zone, generates locale files,

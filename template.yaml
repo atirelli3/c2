@@ -1,0 +1,71 @@
+# ---------------------------------------------------------------------
+#   ______ ___    | Command&Control (C2) - Configuration file         |
+#  /      |__ \   |---------------------------------------------------|
+# |  ,----'  ) |  | Description | Configuration file to decleare what |
+# |  |      / /   |             | should be installed on the system.  |
+# |  `----./ /_   |---------------------------------------------------|
+#  \______|____|  |    Owner    | a7ir3                               |
+#                 |    GitHub   | https://github.com/atirelli3        |
+#                 |   Version   | 1.0.0 (beta)                        |
+# ---------------------------------------------------------------------
+
+hostname: "archlinux"
+
+system:
+  lang:
+    - en_US.UTF-8
+    - it_IT.UTF-8
+  timezone: "America/New_York"
+  lc_time: "en_US.UTF-8"
+  keyboard: "us"
+
+mirrorlist:
+  reflector:
+    enable: yes
+    country:
+      - Italy
+      - Germany
+      - France
+
+pacman:
+  bar: yes
+  color: yes
+  verbose: yes
+  parallel_download:
+    enable: yes
+    number: "20"
+
+
+
+
+# boot:
+#   loader: "grub"
+#   size: "512MiB"
+#   mountpoint: "esp"
+#   label: "ESP"
+#   osprober: "no"
+
+# disk:
+#   target: "/dev/sda"
+#   filesystem: "ext4"
+#   label: "archlinux"
+#   encrypt:
+#     enable: yes
+#     type: "luks2"
+#     passphrase: "changeme"
+#     label: "cryptdev"
+
+# hardware:
+#   cpu: "intel"
+#   gpu: "nvidia"
+
+# network:
+#   networkmanager: yes
+#   firewall:
+#     iptables: no
+#     nftables: yes
+#     ufw: yes
+
+# audio:
+#   pipewire: yes
+#   pulseaudio: no
