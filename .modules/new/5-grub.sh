@@ -37,13 +37,14 @@ fi
 
 install_grub2() {
   pacman -S --noconfirm efibootmgr
-  su - $username
-  git clone https://aur.archlinux.org/grub-improved-luks2-git.git 
-  cd grub-improved-luks2-git
-  makepkg -si
-  cd ..
-  rm -rf grub-improved-luks2-git
-  exit
+  sudo -u "$username" bash -c "
+    cd /tmp &&
+    git clone https://aur.archlinux.org/grub-improved-luks2-git.git &&
+    cd grub-improved-luks2-git &&
+    makepkg -si --noconfirm &&
+    cd .. &&
+    rm -rf grub-improved-luks2-git
+  "
 }
 
 # Setup GRUB bootloader:
