@@ -23,21 +23,21 @@ ymlfile="$1" # Configuration file
 stdout="$2"  # Standard output
 
 # System
-system_keyboard="$(yq eval '.system.keyboard' "$ymlfile")" # Keyboard layout
+system_keyboard="$(yq '.system.keyboard' "$ymlfile")" # Keyboard layout
 
 # Mirrorlist
-mirrorlist_reflector_enable="$(yq eval '.mirrorlist.reflector.enable' "$ymlfile")" # Enable reflector
-mirrorlist_reflector_country="$(yq eval \
-  '.mirrorlist.reflector.country[]' "$ymlfile" | paste -sd ",")"                   # Reflector country
+mirrorlist_reflector_enable="$(yq '.mirrorlist.reflector.enable' "$ymlfile")" # Enable reflector
+mirrorlist_reflector_country="$(yq \
+  '.mirrorlist.reflector.country[]' "$ymlfile" | paste -sd ",")"              # Reflector country
 
 # Pacman
-pacman_bar="$(yq eval '.pacman.bar' "$ymlfile")"         # Fancy progress bar
-pacman_color="$(yq eval '.pacman.color' "$ymlfile")"     # Color output
-pacman_verbose="$(yq eval '.pacman.verbose' "$ymlfile")" # Verbose package list
-pacman_parallel_download_enable="$(yq eval \
-  '.pacman.parallel_download.enable' "$ymlfile")"        # Parallel download
-pacman_parallel_download_n="$(yq eval \
-  '.pacman.parallel_download.number' "$ymlfile")"        # Number of parallel download(s) [MAX]
+pacman_bar="$(yq '.pacman.bar' "$ymlfile")"         # Fancy progress bar
+pacman_color="$(yq '.pacman.color' "$ymlfile")"     # Color output
+pacman_verbose="$(yq '.pacman.verbose' "$ymlfile")" # Verbose package list
+pacman_parallel_download_enable="$(yq \
+  '.pacman.parallel_download.enable' "$ymlfile")"   # Parallel download
+pacman_parallel_download_n="$(yq \
+  '.pacman.parallel_download.number' "$ymlfile")"   # Number of parallel download(s) [MAX]
 
 
 # ------------------------------------------------------------------------------

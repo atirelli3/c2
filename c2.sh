@@ -60,7 +60,7 @@ distro_id=$(grep '^ID=' /etc/os-release | cut -d'=' -f2)  # Get Distribution ID
 [[ "$3" == "silent" ]] && stdout="&> /dev/null"  # Silence the output of the operation(s)
 
 # Arg(s) - 'create'
-if [[ "$1" = "create" ]];
+if [[ "$1" = "create" ]]; then
   # Check prerequisites => root privileges 
   [ "$EUID" -ne 0 ] && { print_warning "Please run as root. Aborting script."; exit 1; }
   # Check prerequisites => system is in UEFI mode
