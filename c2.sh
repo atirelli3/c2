@@ -55,7 +55,7 @@ create_arch() {
 # - Call of each arg(s) functionalities of the script
 # ------------------------------------------------------------------------------
 
-distro_id=grep '^ID=' /etc/os-release | cut -d'=' -f2  # Get Distribution ID
+distro_id=$(grep '^ID=' /etc/os-release | cut -d'=' -f2)  # Get Distribution ID
 
 [[ "$3" == "silent" ]] && stdout="&> /dev/null"  # Silence the output of the operation(s)
 
@@ -66,5 +66,5 @@ if [[ "$1" = "create" ]];
   # Check prerequisites => system is in UEFI mode
   [[ "$checkefi" = "yes" && ! -d /sys/firmware/efi/efivars ]] && { print_warning "UEFI mode not detected. Aborting script."; exit 1; }
 
-  if [ "$id" = "arch" ] && { create_arch; }
+  [[ "$distro_id" = "arch" ]] && create_arch
 fi
